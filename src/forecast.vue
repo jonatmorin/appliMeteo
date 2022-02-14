@@ -4,31 +4,28 @@
 
     <div class="is-mobile px-5 columns is-flex-mobile is-flex-wrap-wrap">
     <div class="column is-half-mobile is-one-third-tablet is-one-fifth-widescreen"
-     v-for="day in this.forecast.data"
-     v-bind:key="day.valid_date">
-      <h3>{{day.valid_date}}</h3>
+     v-for="day in this.sevenDaysForecast.slice(1,6)"
+     v-bind:key="day.dt">
+      <h3>{{convertUnixTime(day.dt)}}</h3>
 
-      <span>{{day.temp}} &#176; C</span>
-        <img :src="`https://www.weatherbit.io/static/img/icons/${day.weather.icon}.png`">
+      <span>{{day.temp.day}} &#176; C</span>
+        <img :src="`http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`">
         {{day.weather.description}}
 
-    </div>
       </div>
-
-
-
-
+    </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import {getForecast5Days} from "./api/openWeatherMapApi";
 
 export default {
   name: "forecast",
 
   data: function () {
       return {
+        sevenDaysForecast: [],
         forecast: '',
         coordinatesX: window.localStorage.getItem('navpositionX'),
         coordinatesY: window.localStorage.getItem('navpositionY'),
@@ -36,31 +33,15 @@ export default {
       }
     },
 
-  // props: ['navcoord'],
-
   methods: {
-    getForecast: async function () {
+    convertUnixTime: function (unix_timestamp) {
+      let convertedDate = new Date (unix_timestamp * 1000);
+      return convertedDate.toDateString();
+    }
+  },
 
-      const response = await axios.get(
-          "https://api.weatherbit.io/v2.0/forecast/daily/",
-          {
-            params: {
-              lat: this.coordinatesX,
-              lon: this.coordinatesY,
-              key: "edcec330cb664df7aef7052c98a9fbb2",
-              lang: "fr",
-              days: 5,
-
-            },
-          },
-      );
-        this.forecast = response.data;
-      },
-    },
-
-  mounted:
-  function () {
-    this.getForecast()
+  async created() {
+    this.sevenDaysForecast = await getForecast5Days(this.coordinatesX, this.coordinatesY);
   }
 
 
