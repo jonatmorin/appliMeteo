@@ -4,7 +4,7 @@ node_modules/
 
 
 # local env files
-.env.local
+API_KEY.env.local
 .env.*.local
 
 # Log files
