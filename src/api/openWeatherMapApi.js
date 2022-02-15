@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_URL = "https://api.openweathermap.org/data/2.5";
-const API_KEY = "5d08576bf748affb068993b10407670e";
+const API_KEY = process.env.VUE_APP_WEATHER_API_KEY;
 
 export const getCurrentWeather = async function (lat, lon) {
     let response = await axios.get(
@@ -15,7 +15,7 @@ export const getCurrentWeather = async function (lat, lon) {
             }
         })
     if (response.status !== 200) {
-        throw new Error("Unable to get weather");
+        throw new Error("Unable to get current weather");
     }
     return response.data;
 }
