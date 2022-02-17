@@ -8,7 +8,7 @@
      v-bind:key="day.dt">
       <h3>{{convertUnixTime(day.dt)}}</h3>
 
-      <span>{{day.temp.day}} &#176; C</span>
+      <span>{{Math.round(day.temp.day)}} &#176; C</span>
         <img :src="`http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`">
         {{day.weather.description}}
 
@@ -43,8 +43,6 @@ export default {
   async created() {
     this.sevenDaysForecast = await getForecast5Days(this.coordinatesX, this.coordinatesY);
   }
-
-
 }
 </script>
 
