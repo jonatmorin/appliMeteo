@@ -4,7 +4,6 @@
       <div class="section is-small has-background-info-dark m-5">
         <div class="columns">
           <div class="column is-four-fifths">
-
             <h3 class="title is-5 has-text-white">Conditions actuelles</h3>
             <div>{{Math.round(mercure)}} &#176; {{unitsSymbol}}, ressentie {{Math.round(temperatureRessentie)}} &#176; {{unitsSymbol}}</div>
             <div class="description">
@@ -15,34 +14,19 @@
           <div class="column">
             <div class="switchcontainer">
               <label class="switch"><input type="checkbox" v-model="unitIsToggle" @change="toggleUnits" />
-
-                <div ></div>
-
+                <div></div>
               </label>
             </div>
             <div class="is-flex">
               <p class="m-auto">&#176; C / &#176; F</p>
             </div>
-
           </div>
-
         </div>
-
-
-
-        </div>
-
-
-
-
-
-
+      </div>
   </div>
-
 </template>
 
 <script>
-
 import {getCurrentWeather} from "./api/openWeatherMapApi";
 
 export default {
@@ -59,7 +43,6 @@ export default {
       unitIsToggle: false,
       currentUnits: "metric",
       unitsSymbol: "C"
-
     }
   },
 
@@ -72,7 +55,6 @@ export default {
       this.weatherDecription = this.currentWeatherData.weather[0];
       this.ville = this.currentWeatherData.name;
     },
-
 
     toggleUnits: function ()
     {
@@ -90,23 +72,15 @@ export default {
       }
       this.$emit('toggleOfUnits', this.currentUnits);
     },
-
-
-
   },
 
   async created() {
-    this.currentWeatherData = await getCurrentWeather(this.coordinatesX,this.coordinatesY, this.currentUnits);
-    this.mercure = this.currentWeatherData.main.temp;
-    this.temperatureRessentie = this.currentWeatherData.main.feels_like;
-    this.weatherDecription = this.currentWeatherData.weather[0];
-    this.ville = this.currentWeatherData.name;
+    this.fetchWeather();
   }
 }
 </script>
 
 <style scoped>
-
 
 .switchcontainer {
   height: 40px;

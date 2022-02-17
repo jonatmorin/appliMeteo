@@ -3,7 +3,6 @@
   <location @toggleOfUnits="updateUnits"></location>
   <forecast v-bind:currentUnits="currentUnits"></forecast>
 </div>
-
 </template>
 
 <script>
