@@ -8,7 +8,7 @@
      v-bind:key="day.dt">
       <h3>{{convertUnixTime(day.dt)}}</h3>
 
-      <span>{{Math.round(day.temp.day)}} &#176; C</span>
+      <span>{{Math.round(day.temp.day)}} &#176; {{unitsSymbol}}</span>
         <img :src="`http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`">
         {{day.weather.description}}
 
@@ -29,11 +29,39 @@ export default {
         forecast: '',
         coordinatesX: window.localStorage.getItem('navpositionX'),
         coordinatesY: window.localStorage.getItem('navpositionY'),
-
       }
     },
 
+  props: ['currentUnits'],
+
+  computed: {
+    unitsSymbol: function ()
+    {
+      let symbol = "C"
+      if (this.currentUnits === "metric")
+      {
+        symbol = "C";
+      }
+      else
+      {
+       symbol = "F";
+      }
+      return symbol;
+    }
+  },
+
+  watch: {
+    currentUnits: function () {
+      this.fetchWeather();
+    }
+  },
+
   methods: {
+    fetchWeather : async function ()
+    {
+      this.sevenDaysForecast = await getForecast5Days(this.coordinatesX, this.coordinatesY,this.currentUnits);
+    },
+
     convertUnixTime: function (unix_timestamp) {
       let convertedDate = new Date (unix_timestamp * 1000);
       return convertedDate.toDateString();
@@ -41,7 +69,7 @@ export default {
   },
 
   async created() {
-    this.sevenDaysForecast = await getForecast5Days(this.coordinatesX, this.coordinatesY);
+    this.sevenDaysForecast = await getForecast5Days(this.coordinatesX, this.coordinatesY, this.currentUnits);
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
 <div>
-  <location></location>
-  <forecast></forecast>
+  <location @toggleOfUnits="updateUnits"></location>
+  <forecast v-bind:currentUnits="currentUnits"></forecast>
 </div>
 
 </template>
@@ -21,11 +21,15 @@ export default {
   data: function () {
     return {
       navcoord: [],
-
+      currentUnits: "metric",
     }
   },
 
   methods: {
+    updateUnits: function (unitsToUse) {
+      this.currentUnits = unitsToUse;
+    },
+
     askLocation: function () {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.showPosition);

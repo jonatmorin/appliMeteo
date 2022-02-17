@@ -6,7 +6,7 @@
           <div class="column is-four-fifths">
 
             <h3 class="title is-5 has-text-white">Conditions actuelles</h3>
-            <div>{{Math.round(mercure)}} &#176; C, ressentie {{Math.round(temperatureRessentie)}} &#176; C</div>
+            <div>{{Math.round(mercure)}} &#176; {{unitsSymbol}}, ressentie {{Math.round(temperatureRessentie)}} &#176; {{unitsSymbol}}</div>
             <div class="description">
               <img :src="`http://openweathermap.org/img/wn/${weatherDecription.icon}@2x.png`">
               {{weatherDecription.description}}
@@ -88,6 +88,7 @@ export default {
         this.unitsSymbol = "C";
         this.fetchWeather();
       }
+      this.$emit('toggleOfUnits', this.currentUnits);
     },
 
 
